@@ -1,0 +1,7 @@
+data:
+  decompressed:
+    train: ../Dataset/20news-bydate/20news-bydate-train 
+
+output:
+  results_dir: ./resources/experiment_results.csv
+  figures_dir: ./resources/plots

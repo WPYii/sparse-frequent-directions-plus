@@ -1,0 +1,7 @@
+.venv/
+.poetry/
+.DS_Store
+*.log
+.vscode/
+.idea/
+

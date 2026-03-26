@@ -1,0 +1,178 @@
+[02:06:32] INFO - Original shape: (11314, 130107)
+[02:06:32] INFO - Vocab size: 130107
+[02:06:32] INFO - Transposed shape: (130107, 3000)
+[02:07:28] INFO - Plot saved to: resources/plots/fd_sfd_paper_style.png
+[02:13:34] INFO - Original shape: (11314, 130107)
+[02:13:34] INFO - Vocab size: 130107
+[02:13:34] INFO - Transposed shape: (130107, 3000)
+[02:14:09] INFO - Original shape: (11314, 130107)
+[02:14:09] INFO - Vocab size: 130107
+[02:14:09] INFO - Transposed shape: (130107, 3000)
+[02:15:01] INFO - Plot saved to: resources/plots/fd_sfd_real_comparison.png
+[02:19:24] INFO - Original shape: (11314, 130107)
+[02:19:24] INFO - Vocab size: 130107
+[02:19:24] INFO - Transposed shape: (130107, 3000)
+[02:19:24] INFO - Running experiments for sketch size l=5
+[02:20:03] INFO - Running experiments for sketch size l=10
+[02:20:42] INFO - Running experiments for sketch size l=15
+[02:21:24] INFO - Running experiments for sketch size l=20
+[02:22:07] INFO - Running experiments for sketch size l=50
+[02:23:01] INFO - Running experiments for sketch size l=100
+[02:23:54] INFO - Plot saved to: resources/plots/fd_sfd_real_sketch_size.png
+[02:26:51] INFO - Original shape: (11314, 130107)
+[02:26:51] INFO - Vocab size: 130107
+[02:26:51] INFO - Transposed shape: (130107, 3000)
+[02:26:51] INFO - Running experiments for sketch size l=5
+[02:27:10] INFO - Running experiments for sketch size l=10
+[02:27:31] INFO - Running experiments for sketch size l=15
+[02:27:52] INFO - Running experiments for sketch size l=20
+[02:28:14] INFO - Running experiments for sketch size l=50
+[02:28:45] INFO - Running experiments for sketch size l=100
+[02:29:15] INFO - Plot saved to: resources/plots/fd_sfd_real_sketch_size.png
+[02:37:12] INFO - Original shape: (11314, 130107)
+[02:37:12] INFO - Vocab size: 130107
+[02:37:12] INFO - Transposed shape: (130107, 3000)
+[02:37:12] INFO - Running experiments for sketch size l=5
+[02:37:25] INFO - Running experiments for sketch size l=10
+[02:37:41] INFO - Running experiments for sketch size l=15
+[02:37:59] INFO - Running experiments for sketch size l=20
+[02:38:17] INFO - Running experiments for sketch size l=50
+[02:38:45] INFO - Running experiments for sketch size l=100
+[02:39:12] INFO - Plot saved to: resources/plots/fd_sfd_real_sketch_size.png
+[02:42:53] INFO - Original shape: (11314, 130107)
+[02:42:53] INFO - Vocab size: 130107
+[02:42:53] INFO - Transposed shape: (130107, 3000)
+[02:42:53] INFO - Running experiments for sketch size l=5
+[02:43:07] INFO - Running experiments for sketch size l=10
+[02:43:22] INFO - Running experiments for sketch size l=15
+[02:43:39] INFO - Running experiments for sketch size l=20
+[02:43:58] INFO - Running experiments for sketch size l=50
+[02:44:25] INFO - Running experiments for sketch size l=100
+[02:44:52] INFO - Plot saved to: resources/plots/fd_sfd_real_sketch_size.png
+[16:08:46] INFO - Original shape: (11314, 130107)
+[16:08:46] INFO - Vocab size: 130107
+[16:08:46] INFO - Transposed shape: (130107, 3000)
+[16:08:46] INFO - Running experiments for real with sketch size l=5
+[16:09:00] INFO - Running experiments for real with sketch size l=10
+[16:09:16] INFO - Running experiments for real with sketch size l=15
+[16:09:33] INFO - Running experiments for real with sketch size l=20
+[16:09:53] INFO - Running experiments for real with sketch size l=50
+[16:10:22] INFO - Running experiments for real with sketch size l=100
+[16:10:50] INFO - Synthetic matrix shape: (10000, 1000)
+[16:10:50] INFO - Synthetic nnz: 1000000
+[16:10:50] INFO - Synthetic density: 0.100000
+[16:10:50] INFO - Running experiments for synthetic with sketch size l=5
+[16:10:52] INFO - Running experiments for synthetic with sketch size l=10
+[16:10:53] INFO - Running experiments for synthetic with sketch size l=15
+[16:10:55] INFO - Running experiments for synthetic with sketch size l=20
+[16:10:57] INFO - Running experiments for synthetic with sketch size l=50
+[16:11:00] INFO - Running experiments for synthetic with sketch size l=100
+[16:11:02] INFO - Saved results to ./resources/experiment_results.csv
+[16:22:53] INFO - Original shape: (11314, 130107)
+[16:22:53] INFO - Vocab size: 130107
+[16:22:53] INFO - Transposed shape: (130107, 3000)
+[16:22:53] INFO - Running real-data experiment with sketch size l=5
+[16:23:07] INFO - Running real-data experiment with sketch size l=10
+[16:23:23] INFO - Running real-data experiment with sketch size l=15
+[16:23:40] INFO - Running real-data experiment with sketch size l=20
+[16:23:59] INFO - Running real-data experiment with sketch size l=50
+[16:24:27] INFO - Running real-data experiment with sketch size l=100
+[16:24:54] INFO - Running synthetic experiment: vary n=10000 with n=10000, d=1000, l=50, z=100
+[16:24:59] INFO - Running synthetic experiment: vary n=20000 with n=20000, d=1000, l=50, z=100
+[16:25:07] INFO - Running synthetic experiment: vary n=30000 with n=30000, d=1000, l=50, z=100
+[16:25:20] INFO - Running synthetic experiment: vary n=40000 with n=40000, d=1000, l=50, z=100
+[16:25:36] INFO - Running synthetic experiment: vary n=50000 with n=50000, d=1000, l=50, z=100
+[16:25:56] INFO - Running synthetic experiment: vary n=60000 with n=60000, d=1000, l=50, z=100
+[16:26:13] INFO - Running synthetic experiment: vary d=1000 with n=10000, d=1000, l=50, z=100
+[16:26:16] INFO - Running synthetic experiment: vary d=2000 with n=10000, d=2000, l=50, z=100
+[16:26:21] INFO - Running synthetic experiment: vary d=3000 with n=10000, d=3000, l=50, z=100
+[16:26:28] INFO - Running synthetic experiment: vary d=4000 with n=10000, d=4000, l=50, z=100
+[16:26:40] INFO - Running synthetic experiment: vary d=5000 with n=10000, d=5000, l=50, z=100
+[16:27:00] INFO - Running synthetic experiment: vary d=6000 with n=10000, d=6000, l=50, z=100
+[16:27:31] INFO - Running synthetic experiment: vary l=5 with n=10000, d=1000, l=5, z=100
+[16:27:33] INFO - Running synthetic experiment: vary l=10 with n=10000, d=1000, l=10, z=100
+[16:27:36] INFO - Running synthetic experiment: vary l=15 with n=10000, d=1000, l=15, z=100
+[16:27:39] INFO - Running synthetic experiment: vary l=20 with n=10000, d=1000, l=20, z=100
+[16:27:42] INFO - Running synthetic experiment: vary l=50 with n=10000, d=1000, l=50, z=100
+[16:27:46] INFO - Running synthetic experiment: vary l=100 with n=10000, d=1000, l=100, z=100
+[16:27:48] INFO - Running synthetic experiment: vary z=5 with n=10000, d=1000, l=50, z=5
+[16:27:51] INFO - Running synthetic experiment: vary z=100 with n=10000, d=1000, l=50, z=100
+[16:27:55] INFO - Running synthetic experiment: vary z=200 with n=10000, d=1000, l=50, z=200
+[16:28:03] INFO - Running synthetic experiment: vary z=300 with n=10000, d=1000, l=50, z=300
+[16:28:17] INFO - Running synthetic experiment: vary z=400 with n=10000, d=1000, l=50, z=400
+[16:28:33] INFO - Running synthetic experiment: vary z=500 with n=10000, d=1000, l=50, z=500
+[16:28:48] INFO - Saved results to ./resources/experiment_results.csv
+[16:28:49] INFO - Real plot saved to: resources/plots/real_sketch_size_comparison.png
+[16:28:49] INFO - Synthetic plot saved to: resources/plots/synthetic_parameter_comparison.png
+[17:13:05] INFO - Original shape: (11314, 130107)
+[17:13:05] INFO - Vocab size: 130107
+[17:13:05] INFO - Transposed shape: (130107, 3000)
+[17:13:05] INFO - Running real experiment with sketch size l=5
+[17:13:19] INFO - Running real experiment with sketch size l=10
+[17:13:35] INFO - Running real experiment with sketch size l=15
+[17:13:53] INFO - Running real experiment with sketch size l=20
+[17:14:12] INFO - Running real experiment with sketch size l=50
+[17:14:40] INFO - Running real experiment with sketch size l=100
+[17:15:08] INFO - Synthetic experiment: n=10000 (n=10000 d=1000 l=50 z=100)
+[17:15:11] INFO - Synthetic experiment: n=20000 (n=20000 d=1000 l=50 z=100)
+[17:15:19] INFO - Synthetic experiment: n=30000 (n=30000 d=1000 l=50 z=100)
+[17:15:30] INFO - Synthetic experiment: n=40000 (n=40000 d=1000 l=50 z=100)
+[17:15:46] INFO - Synthetic experiment: n=50000 (n=50000 d=1000 l=50 z=100)
+[17:16:05] INFO - Synthetic experiment: n=60000 (n=60000 d=1000 l=50 z=100)
+[17:16:27] INFO - Synthetic experiment: d=1000 (n=10000 d=1000 l=50 z=100)
+[17:16:31] INFO - Synthetic experiment: d=2000 (n=10000 d=2000 l=50 z=100)
+[17:16:36] INFO - Synthetic experiment: d=3000 (n=10000 d=3000 l=50 z=100)
+[17:16:43] INFO - Synthetic experiment: d=4000 (n=10000 d=4000 l=50 z=100)
+[17:16:55] INFO - Synthetic experiment: d=5000 (n=10000 d=5000 l=50 z=100)
+[17:17:15] INFO - Synthetic experiment: d=6000 (n=10000 d=6000 l=50 z=100)
+[17:17:47] INFO - Synthetic experiment: l=5 (n=10000 d=1000 l=5 z=100)
+[17:17:50] INFO - Synthetic experiment: l=10 (n=10000 d=1000 l=10 z=100)
+[17:17:53] INFO - Synthetic experiment: l=15 (n=10000 d=1000 l=15 z=100)
+[17:17:56] INFO - Synthetic experiment: l=20 (n=10000 d=1000 l=20 z=100)
+[17:17:59] INFO - Synthetic experiment: l=50 (n=10000 d=1000 l=50 z=100)
+[17:18:03] INFO - Synthetic experiment: l=100 (n=10000 d=1000 l=100 z=100)
+[17:18:06] INFO - Synthetic experiment: z=5 (n=10000 d=1000 l=50 z=5)
+[17:18:08] INFO - Synthetic experiment: z=100 (n=10000 d=1000 l=50 z=100)
+[17:18:11] INFO - Synthetic experiment: z=200 (n=10000 d=1000 l=50 z=200)
+[17:18:18] INFO - Synthetic experiment: z=300 (n=10000 d=1000 l=50 z=300)
+[17:18:30] INFO - Synthetic experiment: z=400 (n=10000 d=1000 l=50 z=400)
+[17:18:46] INFO - Synthetic experiment: z=500 (n=10000 d=1000 l=50 z=500)
+[17:19:07] INFO - Saved results to ./resources/experiment_results.csv
+[17:19:07] INFO - Real plot saved to: resources/plots/real_sketch_size_comparison.png
+[17:19:07] INFO - Synthetic plot saved to: resources/plots/synthetic_parameter_comparison.png
+[17:23:59] INFO - Original shape: (11314, 130107)
+[17:23:59] INFO - Vocab size: 130107
+[17:23:59] INFO - Transposed shape: (130107, 3000)
+[17:23:59] INFO - Running real experiment with sketch size l=5
+[17:24:12] INFO - Running real experiment with sketch size l=10
+[17:24:28] INFO - Running real experiment with sketch size l=15
+[17:24:46] INFO - Running real experiment with sketch size l=20
+[17:25:04] INFO - Running real experiment with sketch size l=50
+[17:25:32] INFO - Running real experiment with sketch size l=100
+[17:25:59] INFO - Synthetic experiment: n=10000 (n=10000 d=1000 l=50 z=100)
+[17:26:02] INFO - Synthetic experiment: n=20000 (n=20000 d=1000 l=50 z=100)
+[17:26:09] INFO - Synthetic experiment: n=30000 (n=30000 d=1000 l=50 z=100)
+[17:26:20] INFO - Synthetic experiment: n=40000 (n=40000 d=1000 l=50 z=100)
+[17:26:36] INFO - Synthetic experiment: n=50000 (n=50000 d=1000 l=50 z=100)
+[17:26:54] INFO - Synthetic experiment: n=60000 (n=60000 d=1000 l=50 z=100)
+[17:27:16] INFO - Synthetic experiment: d=1000 (n=10000 d=1000 l=50 z=100)
+[17:27:20] INFO - Synthetic experiment: d=2000 (n=10000 d=2000 l=50 z=100)
+[17:27:24] INFO - Synthetic experiment: d=3000 (n=10000 d=3000 l=50 z=100)
+[17:27:31] INFO - Synthetic experiment: d=4000 (n=10000 d=4000 l=50 z=100)
+[17:27:44] INFO - Synthetic experiment: d=5000 (n=10000 d=5000 l=50 z=100)
+[17:28:06] INFO - Synthetic experiment: d=6000 (n=10000 d=6000 l=50 z=100)
+[17:28:41] INFO - Synthetic experiment: l=5 (n=10000 d=1000 l=5 z=100)
+[17:28:44] INFO - Synthetic experiment: l=10 (n=10000 d=1000 l=10 z=100)
+[17:28:47] INFO - Synthetic experiment: l=15 (n=10000 d=1000 l=15 z=100)
+[17:28:49] INFO - Synthetic experiment: l=20 (n=10000 d=1000 l=20 z=100)
+[17:28:53] INFO - Synthetic experiment: l=50 (n=10000 d=1000 l=50 z=100)
+[17:28:56] INFO - Synthetic experiment: l=100 (n=10000 d=1000 l=100 z=100)
+[17:28:59] INFO - Synthetic experiment: z=5 (n=10000 d=1000 l=50 z=5)
+[17:29:01] INFO - Synthetic experiment: z=100 (n=10000 d=1000 l=50 z=100)
+[17:29:04] INFO - Synthetic experiment: z=200 (n=10000 d=1000 l=50 z=200)
+[17:29:11] INFO - Synthetic experiment: z=300 (n=10000 d=1000 l=50 z=300)
+[17:29:23] INFO - Synthetic experiment: z=400 (n=10000 d=1000 l=50 z=400)
+[17:29:38] INFO - Synthetic experiment: z=500 (n=10000 d=1000 l=50 z=500)
+[17:29:58] INFO - Saved results to resources/experiment_results.csv
+[17:29:59] INFO - Real plot saved to: resources/plots/real_sketch_size_comparison.png
+[17:29:59] INFO - Synthetic plot saved to: resources/plots/synthetic_parameter_comparison.png
