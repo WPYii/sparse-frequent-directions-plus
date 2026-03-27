@@ -1,6 +1,9 @@
 data:
   decompressed:
     train: ../Dataset/20news-bydate/20news-bydate-train 
+  rcv1_subset: train
+  rcv1_max_samples: 10000
+  rcv1_max_features: 10000
 
 output:
   results_dir: ./resources/experiment_results.csv

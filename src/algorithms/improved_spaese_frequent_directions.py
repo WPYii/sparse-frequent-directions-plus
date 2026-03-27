@@ -93,18 +93,21 @@ class ImprovedSparseFrequentDirections:
         m, d = A_buffer.shape
         l_eff = min(self.l, m, d)
 
-        if l_eff == 0:
-            return np.zeros((self.l, d), dtype=float)
-
+        # Oversampling is the paper's key recommendation for small spectral gaps [cite: 1037, 1044]
+        # p > k is used to accelerate convergence when sigma_k / sigma_{k+1} is small [cite: 1034]
         work_rank = min(l_eff + self.oversample, m, d)
 
+        # Obtain the near-optimal singular vectors from the Krylov subspace [cite: 661, 994]
         Z = self._block_krylov_iteration(A_buffer, work_rank)
 
+        # Project A onto the optimized subspace [cite: 780, 789]
+        # P = Z.T @ A captures nearly as much variance as true top k [cite: 632]
         P = Z.T @ A_buffer
-        P = P.toarray() if sp.issparse(P) else np.asarray(P, dtype=float)
+        P = np.asarray(P, dtype=float)
 
         _, s, vt = np.linalg.svd(P, full_matrices=False)
 
+        # Standard SFD shrinking step [cite: 162, 186]
         delta = s[l_eff - 1] ** 2
         s_shrunk = np.sqrt(np.maximum(s[:l_eff] ** 2 - delta, 0.0))
 
@@ -130,26 +133,42 @@ class ImprovedSparseFrequentDirections:
 
     def _block_krylov_iteration(self, A: sp.csr_matrix, rank: int):
         m, d = A.shape
-
-        if rank <= 0:
-            return np.zeros((m, 0), dtype=float)
-
+        # Algorithm 2 Step 1: Initialize random matrix 
         G = self.rng.standard_normal(size=(d, rank))
-
-        Y0 = A @ G
-        Y0 = np.asarray(Y0, dtype=float)
-
-        Q, _ = np.linalg.qr(Y0, mode="reduced")
-        krylov_blocks = [Q]
-
+        
+        # We start with A * G 
+        Y = A @ G
+        Y = np.asarray(Y, dtype=float)
+        
+        # Step 2: Accumulate the blocks [A*G, (AA^T)A*G, ..., (AA^T)^q A*G] 
+        # Orthonormalizing each block is critical for numerical stability [cite: 843]
+        Q_block, _ = np.linalg.qr(Y, mode='reduced')
+        krylov_blocks = [Q_block]
+        
         for _ in range(self.n_iter):
-            Y = A @ (A.T @ Q)
+            # Compute (AA^T) * current_block [cite: 618, 828]
+            # Matrix-matrix multiplication is O(nnz(A) * rank) [cite: 663]
+            Y = A @ (A.T @ Q_block)
             Y = np.asarray(Y, dtype=float)
-
-            Q, _ = np.linalg.qr(Y, mode="reduced")
-            krylov_blocks.append(Q)
-
+            Q_block, _ = np.linalg.qr(Y, mode='reduced')
+            krylov_blocks.append(Q_block)
+            
+        # Step 3: Combine all blocks to form the basis Q 
         K = np.hstack(krylov_blocks)
-        Z, _ = np.linalg.qr(K, mode="reduced")
-
-        return Z
+        Q, _ = np.linalg.qr(K, mode='reduced')
+        
+        # Step 4 & 5: Find the top singular vectors of the projected matrix M 
+        # M = Q^T (AA^T) Q 
+        # This Rayleigh-Ritz method finds the best approximation in the subspace [cite: 758]
+        AQ = A.T @ Q
+        M = AQ.T @ AQ # Equivalent to Q^T A A^T Q
+        
+        # Compute eigenvectors of M to get the top principal components 
+        eigenvalues, U_hat = np.linalg.eigh(M)
+        # Sort in descending order
+        idx = np.argsort(eigenvalues)[::-1]
+        U_hat = U_hat[:, idx]
+        
+        # Step 6: Return the basis Z = Q * U_hat_k [cite: 618, 819]
+        # We only return the first 'rank' vectors to maintain efficiency
+        return Q @ U_hat[:, :rank]
