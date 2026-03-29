@@ -2,7 +2,6 @@ import numpy as np
 import scipy.sparse as sp
 from tqdm import tqdm
 
-
 class ImprovedSparseFrequentDirections:
     def __init__(
         self,
@@ -111,9 +110,8 @@ class ImprovedSparseFrequentDirections:
         if l_eff == 0:
             return np.zeros((self.l, d), dtype=float)
 
-        Z = self._simultaneous_iteration(A_buffer, l_eff)
+        Z = self._block_krylov_iteration(A_buffer, l_eff)
 
-        # P has shape (l_eff, d)
         P = Z.T @ A_buffer
         P = P.toarray() if sp.issparse(P) else np.asarray(P, dtype=float)
 
@@ -129,15 +127,51 @@ class ImprovedSparseFrequentDirections:
         B_prime[:l_eff, :] = s_shrunk[:, None] * vt[:l_eff, :]
         return B_prime
 
+    def _block_krylov_iteration(self, A: sp.csr_matrix, rank: int):
+        """
+        Implementation of Algorithm 2: BLOCK KRYLOV ITERATION 
+        Captures the span of [A*Pi, (AA^T)A*Pi, ..., (AA^T)^q A*Pi] [cite: 69, 201-202].
+        """
+        _, d = A.shape
+        # Randomized initialization 
+        Pi = self.rng.standard_normal(size=(d, rank))
+        
+        # The Krylov subspace is the union of all powers 
+        current_block = np.asarray(A @ Pi, dtype=float)
+        blocks = [current_block]
+
+        for _ in range(self.n_iter):
+            # Advance to the next power: (A @ A.T) 
+            current_block = np.asarray(A @ (A.T @ current_block), dtype=float)
+            
+            # Re-orthonormalize each block for numerical stability [cite: 274, 501]
+            current_block, _ = np.linalg.qr(current_block, mode="reduced")
+            blocks.append(current_block)
+
+        # Concatenate all blocks to form the full basis K 
+        K = np.hstack(blocks)
+        Q, _ = np.linalg.qr(K, mode="reduced")
+
+        # Rayleigh-Ritz post-processing: find top singular vectors within Q 
+        AQ = A.T @ Q
+        M = AQ.T @ AQ 
+        
+        # SVD on the small projected matrix M [cite: 233, 293]
+        U_hat, _, _ = np.linalg.svd(M, full_matrices=False)
+        
+        # Return the approximate top k singular vectors 
+        return Q @ U_hat[:, :rank]
+
     def _dense_shrink_fast(self, A_dense: np.ndarray):
+        """Compression for the merged dense sketch."""
         m, d = A_dense.shape
         l_eff = min(self.l, m, d)
 
         if l_eff == 0:
             return np.zeros((self.l, d), dtype=float)
 
-        # Faster than full SVD when d is large: eig on A A^T
-        G = A_dense @ A_dense.T  # shape: (m, m)
+        # Efficient SVD via Eigendecomposition of the covariance matrix [cite: 233]
+        G = A_dense @ A_dense.T  
         evals, U = np.linalg.eigh(G)
 
         idx = np.argsort(evals)[::-1]
@@ -146,7 +180,7 @@ class ImprovedSparseFrequentDirections:
 
         s = np.sqrt(np.maximum(evals, 0.0))
 
-        # Recover V^T from A = U S V^T
+        # Reconstruct Right Singular Vectors (V^T) [cite: 236]
         nonzero = s[:l_eff] > 1e-12
         vt = np.zeros((l_eff, d), dtype=float)
         if np.any(nonzero):
@@ -161,32 +195,16 @@ class ImprovedSparseFrequentDirections:
         B[:l_eff, :] = s_shrunk[:, None] * vt[:l_eff, :]
         return B
 
-    def _simultaneous_iteration(self, A: sp.csr_matrix, l_eff: int):
-        _, d = A.shape
-        G = self.rng.standard_normal(size=(d, l_eff))
-
-        Y = np.asarray(A @ G, dtype=float)
-
-        for _ in range(self.n_iter):
-            Y = np.asarray(A @ (A.T @ Y), dtype=float)
-
-        Z, _ = np.linalg.qr(Y, mode="reduced")
-        return Z
-
     def _approx_top_svd_rows(self, P: np.ndarray, rank: int):
-        """
-        Approximate SVD for P (shape rank x d).
-        We sketch the row-space/right singular vectors using a randomized projection.
-        """
+        """Randomized SVD for the projected matrix P[cite: 34, 41, 142]."""
         r, d = P.shape
         k = min(rank + self.p_oversample, r, d)
 
         Omega = self.rng.standard_normal((d, k))
-        Y = P @ Omega                      # shape: (r, k)
+        Y = P @ Omega                      
         Q, _ = np.linalg.qr(Y, mode="reduced")
 
-        B_small = Q.T @ P                  # shape: (k, d)
-        U_hat, s, vt = np.linalg.svd(B_small, full_matrices=False)
+        B_small = Q.T @ P                  
+        _, s, vt = np.linalg.svd(B_small, full_matrices=False)
 
-        # Left singular vectors of P would be Q @ U_hat, but we only need s, vt
         return s[:rank], vt[:rank, :]
