@@ -238,3 +238,22 @@
 [00:30:54] INFO - Running real experiment with sketch size l=100
 [00:36:44] INFO - Saved results to resources/experiment_results.csv
 [00:36:44] INFO - Real plot saved to: resources/plots/real_sketch_size_comparison.png
+[23:57:47] INFO - Original shape: (11314, 130107)
+[23:57:47] INFO - Vocab size: 130107
+[23:57:47] INFO - Transposed shape: (130107, 11314)
+[23:57:47] INFO - Running real experiment with sketch size l=5
+[23:58:45] INFO - Original shape: (11314, 130107)
+[23:58:45] INFO - Vocab size: 130107
+[23:58:45] INFO - Transposed shape: (130107, 11314)
+[23:58:45] INFO - Running real experiment with sketch size l=5
+[23:59:06] INFO - Original shape: (11314, 130107)
+[23:59:06] INFO - Vocab size: 130107
+[23:59:06] INFO - Transposed shape: (130107, 3000)
+[23:59:06] INFO - Running real experiment with sketch size l=5
+[23:59:21] INFO - Running real experiment with sketch size l=10
+[23:59:38] INFO - Running real experiment with sketch size l=15
+[23:59:57] INFO - Running real experiment with sketch size l=20
+[00:00:18] INFO - Running real experiment with sketch size l=50
+[00:00:49] INFO - Running real experiment with sketch size l=100
+[00:01:18] INFO - Saved results to resources/experiment_results.csv
+[00:01:18] INFO - Real plot saved to: resources/plots/real_sketch_size_comparison.png

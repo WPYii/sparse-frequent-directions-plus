@@ -29,7 +29,7 @@ def get_real_data(config):
     logger.info("Original shape: %s", matrix.shape)
     logger.info("Vocab size: %d", preprocessor.get_vocab_size())
 
-    real_data = preprocessor.transform(matrix, 15000)
+    real_data = preprocessor.transform(matrix, 3000)
 
     logger.info("Transposed shape: %s", real_data.shape)
 

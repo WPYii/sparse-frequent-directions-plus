@@ -44,7 +44,7 @@ class ExperimentRunner:
             improved_sfd = ImprovedSparseFrequentDirections(
                 l=l,
                 n_iter=self.improved_sfd_n_iter,
-                oversample=self.improved_sfd_oversample,
+                p_oversample=self.improved_sfd_oversample,
                 random_state=self.improved_sfd_random_state,
             )
 
