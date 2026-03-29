@@ -257,3 +257,137 @@
 [00:00:49] INFO - Running real experiment with sketch size l=100
 [00:01:18] INFO - Saved results to resources/experiment_results.csv
 [00:01:18] INFO - Real plot saved to: resources/plots/real_sketch_size_comparison.png
+[00:08:11] INFO - Running real experiment with sketch size l=5
+[00:16:03] INFO - Loading amazon0302 from ../Data/amazon0302.txt.gz
+[00:16:24] INFO - Loading amazon0302 from ../Dataset/amazon0302.txt.gz
+[00:16:24] INFO - amazon0302 sliced shape: (3000, 6000)
+[00:16:24] INFO - amazon0302 nnz: 13974
+[00:16:24] INFO - Running real experiment with sketch size l=5
+[00:17:02] INFO - Running real experiment with sketch size l=10
+[00:17:39] INFO - Running real experiment with sketch size l=15
+[00:18:17] INFO - Running real experiment with sketch size l=20
+[00:18:55] INFO - Running real experiment with sketch size l=50
+[00:19:31] INFO - Running real experiment with sketch size l=100
+[00:20:09] INFO - Saved results to resources/experiment_results.csv
+[00:20:10] INFO - Real plot saved to: resources/plots/real_sketch_size_comparison.png
+[00:22:09] INFO - Loading amazon0302 from ../Dataset/amazon0302.txt.gz
+[00:22:09] INFO - amazon0302 sliced shape: (3000, 6000)
+[00:22:09] INFO - amazon0302 nnz: 13974
+[00:22:09] INFO - Running real experiment with sketch size l=5
+[00:22:47] INFO - Running real experiment with sketch size l=10
+[00:23:23] INFO - Running real experiment with sketch size l=15
+[00:24:01] INFO - Running real experiment with sketch size l=20
+[00:24:39] INFO - Running real experiment with sketch size l=50
+[00:25:16] INFO - Running real experiment with sketch size l=100
+[00:25:54] INFO - Saved results to resources/experiment_results.csv
+[00:25:54] INFO - Real plot saved to: resources/plots/real_sketch_size_comparison.png
+[00:27:50] INFO - Original shape: (11314, 130107)
+[00:27:50] INFO - Vocab size: 130107
+[00:27:50] INFO - Transposed shape: (130107, 3000)
+[00:27:50] INFO - Running real experiment with sketch size l=5
+[00:28:05] INFO - Running real experiment with sketch size l=10
+[00:28:23] INFO - Running real experiment with sketch size l=15
+[00:28:42] INFO - Running real experiment with sketch size l=20
+[00:29:02] INFO - Running real experiment with sketch size l=50
+[00:29:33] INFO - Running real experiment with sketch size l=100
+[00:30:04] INFO - Saved results to resources/experiment_results.csv
+[00:30:04] INFO - Real plot saved to: resources/plots/real_sketch_size_comparison.png
+[00:30:30] INFO - Loading amazon0302 from ../Dataset/amazon0302.txt.gz
+[00:30:30] INFO - amazon0302 sliced shape: (10000, 6000)
+[00:30:30] INFO - amazon0302 nnz: 30290
+[00:30:30] INFO - Running real experiment with sketch size l=5
+[00:31:08] INFO - Running real experiment with sketch size l=10
+[00:31:46] INFO - Running real experiment with sketch size l=15
+[00:32:25] INFO - Running real experiment with sketch size l=20
+[00:33:05] INFO - Running real experiment with sketch size l=50
+[00:33:46] INFO - Running real experiment with sketch size l=100
+[00:34:27] INFO - Saved results to resources/experiment_results.csv
+[00:34:28] INFO - Real plot saved to: resources/plots/real_sketch_size_comparison.png
+[00:35:53] INFO - Loading amazon0302 from ../Dataset/amazon0302.txt.gz
+[00:35:53] INFO - amazon0302 sliced shape: (20000, 6000)
+[00:35:53] INFO - amazon0302 nnz: 37116
+[00:35:53] INFO - Running real experiment with sketch size l=5
+[00:36:34] INFO - Running real experiment with sketch size l=10
+[00:37:17] INFO - Running real experiment with sketch size l=15
+[00:37:59] INFO - Running real experiment with sketch size l=20
+[00:38:42] INFO - Running real experiment with sketch size l=50
+[00:39:25] INFO - Running real experiment with sketch size l=100
+[00:40:09] INFO - Saved results to resources/experiment_results.csv
+[00:40:10] INFO - Real plot saved to: resources/plots/real_sketch_size_comparison.png
+[00:40:41] INFO - Loading amazon0302 from ../Dataset/amazon0302.txt.gz
+[00:40:41] INFO - amazon0302 sliced shape: (3000, 12000)
+[00:40:41] INFO - amazon0302 nnz: 14385
+[00:40:41] INFO - Running real experiment with sketch size l=5
+[00:42:04] INFO - Loading amazon0302 from ../Dataset/amazon0302.txt.gz
+[00:42:04] INFO - amazon0302 sliced shape: (20000, 80000)
+[00:42:04] INFO - amazon0302 nnz: 96998
+[00:42:04] INFO - Running real experiment with sketch size l=5
+[01:01:17] INFO - Loading amazon0302 from ../Dataset/amazon0302.txt.gz
+[01:01:17] INFO - amazon0302 sliced shape: (15000, 50000)
+[01:01:17] INFO - amazon0302 nnz: 72656
+[01:01:17] INFO - Running real experiment with sketch size l=5
+[01:08:00] INFO - Loading amazon0302 from ../Dataset/amazon0302.txt.gz
+[01:08:00] INFO - amazon0302 sliced shape: (15000, 15000)
+[01:08:00] INFO - amazon0302 nnz: 63586
+[01:08:00] INFO - Running real experiment with sketch size l=5
+[01:08:44] INFO - Loading amazon0302 from ../Dataset/amazon0302.txt.gz
+[01:08:45] INFO - amazon0302 sliced shape: (10000, 10000)
+[01:08:45] INFO - amazon0302 nnz: 41760
+[01:08:45] INFO - Running real experiment with sketch size l=5
+[01:09:43] INFO - Original shape: (11314, 130107)
+[01:09:43] INFO - Vocab size: 130107
+[01:09:43] INFO - Transposed shape: (130107, 3000)
+[01:09:43] INFO - Running real experiment with sketch size l=5
+[01:09:59] INFO - Running real experiment with sketch size l=10
+[01:10:17] INFO - Running real experiment with sketch size l=15
+[01:10:36] INFO - Running real experiment with sketch size l=20
+[01:10:57] INFO - Running real experiment with sketch size l=50
+[01:11:28] INFO - Running real experiment with sketch size l=100
+[01:11:58] INFO - Saved results to resources/experiment_results.csv
+[01:11:58] INFO - Real plot saved to: resources/plots/real_sketch_size_comparison.png
+[01:12:42] INFO - Original shape: (11314, 130107)
+[01:12:42] INFO - Vocab size: 130107
+[01:12:42] INFO - Transposed shape: (130107, 3000)
+[01:12:42] INFO - Running real experiment with sketch size l=5
+[01:12:56] INFO - Running real experiment with sketch size l=10
+[01:13:14] INFO - Running real experiment with sketch size l=15
+[01:13:34] INFO - Running real experiment with sketch size l=20
+[01:13:55] INFO - Running real experiment with sketch size l=50
+[01:14:25] INFO - Running real experiment with sketch size l=100
+[01:14:56] INFO - Saved results to resources/experiment_results.csv
+[01:14:57] INFO - Real plot saved to: resources/plots/real_sketch_size_comparison.png
+[01:16:02] INFO - Downloading SNAP/EMAIL-ENRON from https://snap.stanford.edu/data/email-Enron.txt.gz
+[01:16:04] INFO - Parsing dataset from email-Enron.txt.gz
+[01:16:04] INFO - Dataset Loaded: SNAP/EMAIL-ENRON
+[01:16:04] INFO - Shape: (36692, 36692) | Non-zeros: 367662
+[01:16:04] INFO - Setup: Target k=10, Gap=0.042 [cite: 527, 539]
+[01:16:04] INFO - Running real experiment with sketch size l=5
+[01:18:24] INFO - Loading amazon0302 from ../Dataset/amazon0302.txt.gz
+[01:18:24] INFO - amazon0302 sliced shape: (3000, 6000)
+[01:18:24] INFO - amazon0302 nnz: 13974
+[01:18:24] INFO - Running real experiment with sketch size l=5
+[01:19:01] INFO - Running real experiment with sketch size l=10
+[01:19:37] INFO - Running real experiment with sketch size l=15
+[01:20:14] INFO - Running real experiment with sketch size l=20
+[01:20:50] INFO - Running real experiment with sketch size l=50
+[01:21:27] INFO - Running real experiment with sketch size l=100
+[01:22:04] INFO - Saved results to resources/experiment_results.csv
+[01:22:04] INFO - Real plot saved to: resources/plots/real_sketch_size_comparison.png
+[01:24:57] INFO - Loading amazon0302 from ../Dataset/amazon0302.txt.gz
+[01:24:58] INFO - amazon0302 sliced shape: (6000, 9000)
+[01:24:58] INFO - amazon0302 nnz: 27165
+[01:24:58] INFO - Running real experiment with sketch size l=5
+[01:27:09] INFO - Running real experiment with sketch size l=10
+[01:29:16] INFO - Running real experiment with sketch size l=15
+[01:31:22] INFO - Running real experiment with sketch size l=20
+[01:33:30] INFO - Running real experiment with sketch size l=50
+[01:35:38] INFO - Running real experiment with sketch size l=100
+[01:37:50] INFO - Saved results to resources/experiment_results.csv
+[01:37:50] INFO - Real plot saved to: resources/plots/real_sketch_size_comparison.png
+[01:40:18] INFO - Original shape: (11314, 130107)
+[01:40:18] INFO - Vocab size: 130107
+[01:40:18] INFO - Transposed shape: (130107, 6000)
+[01:40:18] INFO - Running real experiment with sketch size l=5
+[01:41:19] INFO - Running real experiment with sketch size l=10
+[01:42:23] INFO - Running real experiment with sketch size l=15
+[01:43:30] INFO - Running real experiment with sketch size l=20

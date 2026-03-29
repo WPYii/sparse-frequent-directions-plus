@@ -8,7 +8,14 @@ from src.data.data_loader import DataLoader
 from src.data.preprocessing import Preprocessor
 from src.data.synthetic_data import SyntheticDataGenerator
 from src.utils.logger import logger
-
+import numpy as np
+import os
+import gzip
+import urllib.request
+import scipy.sparse as sp
+import gzip
+import numpy as np
+import scipy.sparse as sp
 from src.evaluation.experiment_runner import ExperimentRunner
 from src.visualization.real_data_visualizer import RealDataVisualizer
 from src.visualization.synthetic_data_visualizer import SyntheticDataVisualizer
@@ -29,7 +36,7 @@ def get_real_data(config):
     logger.info("Original shape: %s", matrix.shape)
     logger.info("Vocab size: %d", preprocessor.get_vocab_size())
 
-    real_data = preprocessor.transform(matrix, 3000)
+    real_data = preprocessor.transform(matrix, 6000)
 
     logger.info("Transposed shape: %s", real_data.shape)
 
@@ -54,39 +61,76 @@ def get_real_data_rcv1(config):
     logger.info("RCV1 nnz: %d", A.nnz)
     return A
 
-def get_real_data_wiki(n_docs=20000, max_features=50000, d_limit=20000):
+def get_real_data_enron_dataset(dest_path="email-Enron.txt.gz"):
+    """
+    Downloads and loads the SNAP/EMAIL-ENRON dataset.
+    Follows the paper's setup by using the full graph for k=10.
+    """
+    url = "https://snap.stanford.edu/data/email-Enron.txt.gz"
+    
+    # 1. Download if not exists
+    if not os.path.exists(dest_path):
+        logger.info("Downloading SNAP/EMAIL-ENRON from %s", url)
+        urllib.request.urlretrieve(url, dest_path)
+    
+    rows = []
+    cols = []
+    
+    # 2. Parse the edge list
+    logger.info("Parsing dataset from %s", dest_path)
+    with gzip.open(dest_path, "rt") as f:
+        for line in f:
+            if line.startswith("#"):
+                continue
+            # SNAP format is 'FromNodeId \t ToNodeId'
+            src, dst = map(int, line.split())
+            rows.append(src)
+            cols.append(dst)
+            
+    # 3. Construct the sparse adjacency matrix
+    # The paper uses the matrix to compute principal components [cite: 502]
+    max_id = max(max(rows), max(cols)) + 1
+    A = sp.coo_matrix(
+        (np.ones(len(rows)), (rows, cols)),
+        shape=(max_id, max_id)
+    ).tocsr()
+    
+    logger.info("Dataset Loaded: SNAP/EMAIL-ENRON")
+    logger.info("Shape: %s | Non-zeros: %d", A.shape, A.nnz)
+    logger.info("Setup: Target k=10, Gap=0.042 [cite: 527, 539]")
+    
+    return A
 
-    logger.info("Loading Wikipedia dataset...")
+def get_real_data_amazon0302(path):
 
-    dataset = load_dataset(
-        "wikimedia/wikipedia",
-        "20231101.en",
-        split=f"train[:{n_docs}]"
-    )
+    logger.info("Loading amazon0302 from %s", path)
 
-    documents = [x["text"] for x in dataset]
+    rows = []
+    cols = []
 
-    logger.info("Number of documents: %d", len(documents))
+    with gzip.open(path, "rt") as f:
+        for line in f:
+            if line.startswith("#"):
+                continue
 
-    vectorizer = TfidfVectorizer(
-        lowercase=True,
-        stop_words="english",
-        max_features=max_features
-    )
+            src, dst = map(int, line.split())
+            rows.append(src)
+            cols.append(dst)
 
-    logger.info("Building TF-IDF matrix...")
-    X = vectorizer.fit_transform(documents)
+    rows = np.array(rows)
+    cols = np.array(cols)
 
-    logger.info("TF-IDF shape: %s", X.shape)
-    logger.info("Vocabulary size: %d", len(vectorizer.vocabulary_))
+    n = max(rows.max(), cols.max()) + 1
 
-    A = X.transpose().tocsr()
+    A = sp.coo_matrix(
+        (np.ones(len(rows)), (rows, cols)),
+        shape=(n, n)
+    ).tocsr()
 
-    logger.info("Transposed shape: %s", A.shape)
+    A = A[:6000, :9000]
 
-    if d_limit is not None:
-        A = A[:, :d_limit]
-        logger.info("Dimension limited to: %d", d_limit)
+    logger.info("amazon0302 sliced shape: %s", A.shape)
+    logger.info("amazon0302 nnz: %d", A.nnz)
 
     return A
 
@@ -177,7 +221,8 @@ def main():
     csv_path.parent.mkdir(parents=True, exist_ok=True)
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    real_data = get_real_data(config)
+    # real_data = get_real_data_amazon0302("../Dataset/amazon0302.txt.gz")
+    real_data=get_real_data(config=config)
 
     runner = ExperimentRunner(
         k=10,
