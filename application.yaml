@@ -3,7 +3,7 @@ data:
   amazon_path: ./resources/datasets/amazon0302.txt.gz
   enron_path: ./resources/datasets/email-Enron.txt.gz
   rcv1_subset: train
-  dataset_name: 20news_group
+  dataset_name: amazon0302
 
 output:
   results_dir: ./resources/excel/experiment_results.csv
@@ -12,7 +12,8 @@ output:
 experiment:
   l_values: [5, 10, 15, 20, 50, 100]
   k: 10
-  slice_from:
-  slice_to: 3000
+  slice_from: 3000
+  slice_to: 6000
   rcv1_max_samples: 10000
   rcv1_max_features: 10000
+  test_type: real

@@ -311,6 +311,7 @@ def main():
     k           = config.get("experiment", "k")
     csv_path    = Path(config.get("output", "results_dir"))
     output_dir  = Path(config.get("output", "figures_dir"))
+    test_type   = config.get("experiment", "test_type")
 
     csv_path.parent.mkdir(parents=True, exist_ok=True)
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -335,32 +336,50 @@ def main():
         },
     )
 
-    results_real = runner.run_sketch_size_experiment(
-        A=real_data,
-        l_values=l_values,
-        dataset_name="real",
-    )
-    results_synthetic = run_synthetic_parameter_sweep(runner)
-    results = pd.concat([results_real, results_synthetic], ignore_index=True)
-    numerical_comparison(results)
+    results_list = []
+    if test_type in ["real", "both"]:
+        real_data = get_real_data(config=config)
+
+        results_real = runner.run_sketch_size_experiment(
+            A=real_data,
+            l_values=l_values,
+            dataset_name="real",
+        )
+
+        print("*****=== Real Data Results ===*****")
+        numerical_comparison(results_real)
+
+        results_list.append(results_real)
+
+        real_plotter = RealDataVisualizer(
+            csv_path=csv_path,
+            output_dir=output_dir,
+        )
+
+    if test_type in ["syn", "both"]:
+        results_syn = run_synthetic_parameter_sweep(runner)
+
+        print("\n*****=== Synthetic Data Results ===*****")
+        numerical_comparison(results_syn)
+
+        results_list.append(results_syn)
+
+        synthetic_plotter = SyntheticDataVisualizer(
+            csv_path=csv_path,
+            output_dir=output_dir,
+        )
+
+    results = pd.concat(results_list, ignore_index=True)
     results.to_csv(csv_path, index=False)
     logger.info("Saved results to %s", csv_path)
 
-    real_plotter = RealDataVisualizer(
-        csv_path=csv_path,
-        output_dir=output_dir,
-    )
+    if test_type in ["real", "both"]:
+        real_plot_path = real_plotter.plot()
+        logger.info("Real plot saved to: %s", real_plot_path)
 
-    synthetic_plotter = SyntheticDataVisualizer(
-        csv_path=csv_path,
-        output_dir=output_dir,
-    )
-
-    real_plot_path = real_plotter.plot()
-    synthetic_plot_path = synthetic_plotter.plot()
-
-    logger.info("Real plot saved to: %s", real_plot_path)
-    logger.info("Synthetic plot saved to: %s", synthetic_plot_path)
+    if test_type in ["syn", "both"]:
+        synthetic_plot_path = synthetic_plotter.plot()
+        logger.info("Synthetic plot saved to: %s", synthetic_plot_path)
 
 if __name__ == "__main__":
     main()

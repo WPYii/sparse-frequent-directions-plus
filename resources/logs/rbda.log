@@ -630,3 +630,88 @@
 [00:33:12] INFO - Running real experiment with sketch size l=10
 [00:33:30] INFO - Running real experiment with sketch size l=15
 [00:33:50] INFO - Running real experiment with sketch size l=20
+[00:34:11] INFO - Running real experiment with sketch size l=50
+[00:34:42] INFO - Running real experiment with sketch size l=100
+[00:35:14] INFO - Synthetic experiment: n=10000 (n=10000 d=1000 l=50 z=100)
+[00:35:19] INFO - Synthetic experiment: n=20000 (n=20000 d=1000 l=50 z=100)
+[00:35:28] INFO - Synthetic experiment: n=30000 (n=30000 d=1000 l=50 z=100)
+[00:35:42] INFO - Synthetic experiment: n=40000 (n=40000 d=1000 l=50 z=100)
+[00:36:01] INFO - Synthetic experiment: n=50000 (n=50000 d=1000 l=50 z=100)
+[00:36:23] INFO - Synthetic experiment: n=60000 (n=60000 d=1000 l=50 z=100)
+[00:36:50] INFO - Synthetic experiment: d=1000 (n=10000 d=1000 l=50 z=100)
+[00:36:54] INFO - Synthetic experiment: d=2000 (n=10000 d=2000 l=50 z=100)
+[00:37:00] INFO - Synthetic experiment: d=3000 (n=10000 d=3000 l=50 z=100)
+[00:37:09] INFO - Synthetic experiment: d=4000 (n=10000 d=4000 l=50 z=100)
+[00:37:24] INFO - Synthetic experiment: d=5000 (n=10000 d=5000 l=50 z=100)
+[00:37:50] INFO - Synthetic experiment: d=6000 (n=10000 d=6000 l=50 z=100)
+[00:38:33] INFO - Synthetic experiment: l=5 (n=10000 d=1000 l=5 z=100)
+[00:38:36] INFO - Synthetic experiment: l=10 (n=10000 d=1000 l=10 z=100)
+[00:38:40] INFO - Synthetic experiment: l=15 (n=10000 d=1000 l=15 z=100)
+[00:38:43] INFO - Synthetic experiment: l=20 (n=10000 d=1000 l=20 z=100)
+[00:38:47] INFO - Synthetic experiment: l=50 (n=10000 d=1000 l=50 z=100)
+[00:38:51] INFO - Synthetic experiment: l=100 (n=10000 d=1000 l=100 z=100)
+[00:38:56] INFO - Synthetic experiment: z=5 (n=10000 d=1000 l=50 z=5)
+[00:38:57] INFO - Synthetic experiment: z=100 (n=10000 d=1000 l=50 z=100)
+[00:39:01] INFO - Synthetic experiment: z=200 (n=10000 d=1000 l=50 z=200)
+[00:39:10] INFO - Synthetic experiment: z=300 (n=10000 d=1000 l=50 z=300)
+[00:39:25] INFO - Synthetic experiment: z=400 (n=10000 d=1000 l=50 z=400)
+[00:39:45] INFO - Synthetic experiment: z=500 (n=10000 d=1000 l=50 z=500)
+[00:40:12] INFO - Saved results to resources/excel/experiment_results.csv
+[00:40:12] INFO - Real plot saved to: resources/plots/real_sketch_size_comparison.png
+[00:40:12] INFO - Synthetic plot saved to: resources/plots/synthetic_parameter_comparison.png
+[00:43:40] INFO - Loading amazon0302 from ./resources/datasets/amazon0302.txt.gz
+[00:43:41] INFO - Original amazon0302 shape: (262111, 262111)
+[00:43:41] INFO - Original amazon0302 nnz: 1234877
+[00:43:41] INFO - amazon0302 shape after slicing: (6000, 3000)
+[00:43:41] INFO - amazon0302 nnz after slicing: 16073
+[00:43:41] INFO - Running real experiment with sketch size l=5
+[00:43:45] INFO - Running real experiment with sketch size l=10
+[00:43:49] INFO - Running real experiment with sketch size l=15
+[00:43:53] INFO - Running real experiment with sketch size l=20
+[00:43:58] INFO - Running real experiment with sketch size l=50
+[00:44:02] INFO - Running real experiment with sketch size l=100
+[00:44:07] INFO - Synthetic experiment: n=10000 (n=10000 d=1000 l=50 z=100)
+[00:44:11] INFO - Synthetic experiment: n=20000 (n=20000 d=1000 l=50 z=100)
+[00:44:20] INFO - Synthetic experiment: n=30000 (n=30000 d=1000 l=50 z=100)
+[00:44:34] INFO - Synthetic experiment: n=40000 (n=40000 d=1000 l=50 z=100)
+[00:44:53] INFO - Synthetic experiment: n=50000 (n=50000 d=1000 l=50 z=100)
+[00:45:15] INFO - Synthetic experiment: n=60000 (n=60000 d=1000 l=50 z=100)
+[00:45:42] INFO - Synthetic experiment: d=1000 (n=10000 d=1000 l=50 z=100)
+[00:45:47] INFO - Synthetic experiment: d=2000 (n=10000 d=2000 l=50 z=100)
+[00:45:52] INFO - Synthetic experiment: d=3000 (n=10000 d=3000 l=50 z=100)
+[00:46:01] INFO - Synthetic experiment: d=4000 (n=10000 d=4000 l=50 z=100)
+[00:46:16] INFO - Synthetic experiment: d=5000 (n=10000 d=5000 l=50 z=100)
+[00:46:43] INFO - Synthetic experiment: d=6000 (n=10000 d=6000 l=50 z=100)
+[00:47:26] INFO - Synthetic experiment: l=5 (n=10000 d=1000 l=5 z=100)
+[00:47:29] INFO - Synthetic experiment: l=10 (n=10000 d=1000 l=10 z=100)
+[00:47:33] INFO - Synthetic experiment: l=15 (n=10000 d=1000 l=15 z=100)
+[00:47:37] INFO - Synthetic experiment: l=20 (n=10000 d=1000 l=20 z=100)
+[00:47:41] INFO - Synthetic experiment: l=50 (n=10000 d=1000 l=50 z=100)
+[00:47:46] INFO - Synthetic experiment: l=100 (n=10000 d=1000 l=100 z=100)
+[00:47:50] INFO - Synthetic experiment: z=5 (n=10000 d=1000 l=50 z=5)
+[00:47:52] INFO - Synthetic experiment: z=100 (n=10000 d=1000 l=50 z=100)
+[00:47:56] INFO - Synthetic experiment: z=200 (n=10000 d=1000 l=50 z=200)
+[00:48:05] INFO - Synthetic experiment: z=300 (n=10000 d=1000 l=50 z=300)
+[00:48:21] INFO - Synthetic experiment: z=400 (n=10000 d=1000 l=50 z=400)
+[00:48:41] INFO - Synthetic experiment: z=500 (n=10000 d=1000 l=50 z=500)
+[00:49:08] INFO - Saved results to resources/excel/experiment_results.csv
+[00:49:09] INFO - Real plot saved to: resources/plots/real_sketch_size_comparison.png
+[00:49:09] INFO - Synthetic plot saved to: resources/plots/synthetic_parameter_comparison.png
+[00:55:56] INFO - Loading amazon0302 from ./resources/datasets/amazon0302.txt.gz
+[00:55:56] INFO - Original amazon0302 shape: (262111, 262111)
+[00:55:56] INFO - Original amazon0302 nnz: 1234877
+[00:55:56] INFO - amazon0302 shape after slicing: (3000, 6000)
+[00:55:56] INFO - amazon0302 nnz after slicing: 13974
+[00:55:56] INFO - Loading amazon0302 from ./resources/datasets/amazon0302.txt.gz
+[00:55:57] INFO - Original amazon0302 shape: (262111, 262111)
+[00:55:57] INFO - Original amazon0302 nnz: 1234877
+[00:55:57] INFO - amazon0302 shape after slicing: (3000, 6000)
+[00:55:57] INFO - amazon0302 nnz after slicing: 13974
+[00:55:57] INFO - Running real experiment with sketch size l=5
+[00:56:33] INFO - Running real experiment with sketch size l=10
+[00:57:10] INFO - Running real experiment with sketch size l=15
+[00:57:46] INFO - Running real experiment with sketch size l=20
+[00:58:23] INFO - Running real experiment with sketch size l=50
+[00:59:00] INFO - Running real experiment with sketch size l=100
+[00:59:37] INFO - Saved results to resources/excel/experiment_results.csv
+[00:59:37] INFO - Real plot saved to: resources/plots/real_sketch_size_comparison.png
