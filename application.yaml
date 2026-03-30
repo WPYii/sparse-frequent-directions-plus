@@ -1,10 +1,18 @@
 data:
-  decompressed:
-    train: ../Dataset/20news-bydate/20news-bydate-train 
+  20news_group: ./resources/datasets/20news-bydate-train
+  amazon_path: ./resources/datasets/amazon0302.txt.gz
+  enron_path: ./resources/datasets/email-Enron.txt.gz
   rcv1_subset: train
-  rcv1_max_samples: 10000
-  rcv1_max_features: 10000
+  dataset_name: 20news_group
 
 output:
-  results_dir: ./resources/experiment_results.csv
+  results_dir: ./resources/excel/experiment_results.csv
   figures_dir: ./resources/plots
+
+experiment:
+  l_values: [5, 10, 15, 20, 50, 100]
+  k: 10
+  slice_from:
+  slice_to: 3000
+  rcv1_max_samples: 10000
+  rcv1_max_features: 10000

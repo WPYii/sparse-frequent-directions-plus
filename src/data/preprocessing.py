@@ -16,6 +16,8 @@ class Preprocessor:
 
     def transform(self, X, d):
         A = X.transpose().tocsr()
+        if d is None:
+            return A
         return A[:, :d]
     
     def get_vocab_size(self):

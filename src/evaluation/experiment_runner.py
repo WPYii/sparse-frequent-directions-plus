@@ -6,26 +6,64 @@ from src.algorithms.improved_spaese_frequent_directions import ImprovedSparseFre
 from src.evaluation.evaluator import SketchEvaluator
 from src.utils.logger import logger
 
-
 class ExperimentRunner:
-    def __init__(
-        self,
-        k=10,
-        sfd_n_iter=2,
-        sfd_random_state=0,
-        improved_sfd_n_iter=2,
-        improved_sfd_oversample=5,
-        improved_sfd_random_state=0,
-    ):
+    def __init__(self,k=10,algorithm_factories=None,):
         self.k = k
-        self.sfd_n_iter = sfd_n_iter
-        self.sfd_random_state = sfd_random_state
-        self.improved_sfd_n_iter = improved_sfd_n_iter
-        self.improved_sfd_oversample = improved_sfd_oversample
-        self.improved_sfd_random_state = improved_sfd_random_state
 
-    def run_sketch_size_experiment(self, A, l_values, dataset_name):
+        if algorithm_factories is None:
+            self.algorithm_factories = {
+                "FD": lambda l: FrequentDirections(l=l),
+                "SFD": lambda l: SparseFrequentDirections(
+                    l=l,
+                    n_iter=2,
+                    random_state=42,
+                ),
+                "ImprovedSFD": lambda l: ImprovedSparseFrequentDirections(
+                    l=l,
+                    n_iter=2,
+                    p_oversample=5,
+                    random_state=42,
+                ),
+            }
+        else:
+            self.algorithm_factories = algorithm_factories
+
+    def _build_row(self, dataset_name, algorithm_name, l, result, metadata=None):
+        row = {
+            "dataset": dataset_name,
+            "algorithm": algorithm_name,
+            "sketch_size": l,
+            "projection_error": result.projection_error,
+            "covariance_error": result.covariance_error,
+            "runtime_sec": result.runtime_sec,
+        }
+
+        if metadata is not None:
+            row.update(metadata)
+
+        return row
+
+    def _run_one_l(self, A, l, dataset_name, metadata=None):
         evaluator = SketchEvaluator(A=A, k=self.k)
+        rows = []
+
+        for algorithm_name, factory in self.algorithm_factories.items():
+            algorithm = factory(l)
+            result = evaluator.evaluate(algorithm)
+
+            rows.append(
+                self._build_row(
+                    dataset_name=dataset_name,
+                    algorithm_name=algorithm_name,
+                    l=l,
+                    result=result,
+                    metadata=metadata,
+                )
+            )
+
+        return rows
+
+    def run_sketch_size_experiment(self, A, l_values, dataset_name, metadata=None):
         all_results = []
 
         for l in l_values:
@@ -34,102 +72,22 @@ class ExperimentRunner:
                 dataset_name,
                 l,
             )
-
-            fd = FrequentDirections(l=l)
-            sfd = SparseFrequentDirections(
-                l=l,
-                n_iter=self.sfd_n_iter,
-                random_state=self.sfd_random_state,
+            all_results.extend(
+                self._run_one_l(
+                    A=A,
+                    l=l,
+                    dataset_name=dataset_name,
+                    metadata=metadata,
+                )
             )
-            improved_sfd = ImprovedSparseFrequentDirections(
-                l=l,
-                n_iter=self.improved_sfd_n_iter,
-                p_oversample=self.improved_sfd_oversample,
-                random_state=self.improved_sfd_random_state,
-            )
-
-            result_fd = evaluator.evaluate(fd)
-            result_sfd = evaluator.evaluate(sfd)
-            result_improved_sfd = evaluator.evaluate(improved_sfd)
-
-            all_results.append({
-                "dataset": dataset_name,
-                "algorithm": "FD",
-                "sketch_size": l,
-                "projection_error": result_fd.projection_error,
-                "covariance_error": result_fd.covariance_error,
-                "runtime_sec": result_fd.runtime_sec,
-            })
-
-            all_results.append({
-                "dataset": dataset_name,
-                "algorithm": "SFD",
-                "sketch_size": l,
-                "projection_error": result_sfd.projection_error,
-                "covariance_error": result_sfd.covariance_error,
-                "runtime_sec": result_sfd.runtime_sec,
-            })
-
-            all_results.append({
-                "dataset": dataset_name,
-                "algorithm": "ImprovedSFD",
-                "sketch_size": l,
-                "projection_error": result_improved_sfd.projection_error,
-                "covariance_error": result_improved_sfd.covariance_error,
-                "runtime_sec": result_improved_sfd.runtime_sec,
-            })
 
         return pd.DataFrame(all_results)
 
     def run_single_experiment(self, A, l, dataset_name, metadata=None):
-        evaluator = SketchEvaluator(A=A, k=self.k)
-
-        fd = FrequentDirections(l=l)
-        sfd = SparseFrequentDirections(
+        rows = self._run_one_l(
+            A=A,
             l=l,
-            n_iter=self.sfd_n_iter,
-            random_state=self.sfd_random_state,
+            dataset_name=dataset_name,
+            metadata=metadata,
         )
-        improved_sfd = ImprovedSparseFrequentDirections(
-            l=l,
-            n_iter=self.improved_sfd_n_iter,
-            p_oversample=self.improved_sfd_oversample,
-            random_state=self.improved_sfd_random_state,
-        )
-
-        result_fd = evaluator.evaluate(fd)
-        result_sfd = evaluator.evaluate(sfd)
-        result_improved_sfd = evaluator.evaluate(improved_sfd)
-
-        rows = [
-            {
-                "dataset": dataset_name,
-                "algorithm": "FD",
-                "sketch_size": l,
-                "projection_error": result_fd.projection_error,
-                "covariance_error": result_fd.covariance_error,
-                "runtime_sec": result_fd.runtime_sec,
-            },
-            {
-                "dataset": dataset_name,
-                "algorithm": "SFD",
-                "sketch_size": l,
-                "projection_error": result_sfd.projection_error,
-                "covariance_error": result_sfd.covariance_error,
-                "runtime_sec": result_sfd.runtime_sec,
-            },
-            {
-                "dataset": dataset_name,
-                "algorithm": "ImprovedSFD",
-                "sketch_size": l,
-                "projection_error": result_improved_sfd.projection_error,
-                "covariance_error": result_improved_sfd.covariance_error,
-                "runtime_sec": result_improved_sfd.runtime_sec,
-            },
-        ]
-
-        if metadata is not None:
-            for row in rows:
-                row.update(metadata)
-
         return pd.DataFrame(rows)

@@ -5,7 +5,7 @@ from tqdm import tqdm
 
 class DataLoader:
     def __init__(self, config):
-        self.train_dir = Path(config.get("data", "decompressed", "train"))
+        self.train_dir = Path(config.get("data", "20news_group"))
         if not self.train_dir.exists():
             raise FileNotFoundError(f"Train directory not found: {self.train_dir}")
 

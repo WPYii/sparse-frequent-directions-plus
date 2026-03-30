@@ -2,7 +2,11 @@ from pathlib import Path
 import pandas as pd
 from sklearn.datasets import fetch_rcv1
 from sklearn.feature_extraction.text import TfidfVectorizer
-from datasets import load_dataset
+from datasets import config, load_dataset
+from src.algorithms.frequent_directions import FrequentDirections
+from src.algorithms.sparse_frequent_directions import SparseFrequentDirections
+from src.algorithms.improved_spaese_frequent_directions import ImprovedSparseFrequentDirections
+
 from src.utils.config import Config
 from src.data.data_loader import DataLoader
 from src.data.preprocessing import Preprocessor
@@ -20,8 +24,21 @@ from src.evaluation.experiment_runner import ExperimentRunner
 from src.visualization.real_data_visualizer import RealDataVisualizer
 from src.visualization.synthetic_data_visualizer import SyntheticDataVisualizer
 
-
 def get_real_data(config):
+    dataset_name = config.get("data", "dataset_name")
+
+    if dataset_name == "20news_group":
+        return get_real_data_20news_group(config)
+    elif dataset_name == "rcv1":
+        return get_real_data_rcv1(config)
+    elif dataset_name == "enron":
+        return get_real_data_enron_dataset(config)
+    elif dataset_name == "amazon0302":
+        return get_real_data_amazon0302(config)
+    else:
+        raise ValueError(f"Unsupported dataset: {dataset_name}")
+
+def get_real_data_20news_group(config):
     loader = DataLoader(config)
     documents = loader.load_documents()
 
@@ -33,10 +50,11 @@ def get_real_data(config):
 
     matrix = preprocessor.build_sparse_binary_matrix(documents)
 
-    logger.info("Original shape: %s", matrix.shape)
+    logger.info("Original 20news_group shape: %s", matrix.shape)
     logger.info("Vocab size: %d", preprocessor.get_vocab_size())
 
-    real_data = preprocessor.transform(matrix, 3000)
+    slice_to    = config.get("experiment", "slice_to")
+    real_data = preprocessor.transform(matrix, slice_to)
 
     logger.info("Transposed shape: %s", real_data.shape)
 
@@ -44,8 +62,8 @@ def get_real_data(config):
 
 def get_real_data_rcv1(config):
     subset = config.get("data", "rcv1_subset") or "train"
-    max_samples = config.get("data", "rcv1_max_samples")
-    max_features = config.get("data", "rcv1_max_features")
+    max_samples = config.get("experiment", "rcv1_max_samples")
+    max_features = config.get("experiment", "rcv1_max_features")
 
     rcv1 = fetch_rcv1(subset=subset)
     A = rcv1.data.tocsr()
@@ -61,14 +79,9 @@ def get_real_data_rcv1(config):
     logger.info("RCV1 nnz: %d", A.nnz)
     return A
 
-def get_real_data_enron_dataset(dest_path="email-Enron.txt.gz"):
-    """
-    Downloads and loads the SNAP/EMAIL-ENRON dataset.
-    Follows the paper's setup by using the full graph for k=10.
-    """
+def get_real_data_enron_dataset(config):
     url = "https://snap.stanford.edu/data/email-Enron.txt.gz"
-    
-    # 1. Download if not exists
+    dest_path = "./resources/dattasets/email-Enron.txt.gz"
     if not os.path.exists(dest_path):
         logger.info("Downloading SNAP/EMAIL-ENRON from %s", url)
         urllib.request.urlretrieve(url, dest_path)
@@ -76,33 +89,37 @@ def get_real_data_enron_dataset(dest_path="email-Enron.txt.gz"):
     rows = []
     cols = []
     
-    # 2. Parse the edge list
     logger.info("Parsing dataset from %s", dest_path)
     with gzip.open(dest_path, "rt") as f:
         for line in f:
             if line.startswith("#"):
                 continue
-            # SNAP format is 'FromNodeId \t ToNodeId'
             src, dst = map(int, line.split())
             rows.append(src)
             cols.append(dst)
             
-    # 3. Construct the sparse adjacency matrix
-    # The paper uses the matrix to compute principal components [cite: 502]
     max_id = max(max(rows), max(cols)) + 1
     A = sp.coo_matrix(
         (np.ones(len(rows)), (rows, cols)),
         shape=(max_id, max_id)
     ).tocsr()
-    
+
     logger.info("Dataset Loaded: SNAP/EMAIL-ENRON")
     logger.info("Shape: %s | Non-zeros: %d", A.shape, A.nnz)
-    logger.info("Setup: Target k=10, Gap=0.042 [cite: 527, 539]")
     
-    return A[:6000, :9000]
+    slice_from    = config.get("experiment", "slice_from")
+    slice_to    = config.get("experiment", "slice_to")
 
-def get_real_data_amazon0302(path):
+    if slice_from is not None or slice_to is not None:
+        row_end = slice_from if slice_from is not None else A.shape[0]
+        col_end = slice_to if slice_to is not None else A.shape[1]
+        A = A[:row_end, :col_end]
 
+    logger.info("Final shape after slicing: %s", A.shape)
+    return A
+
+def get_real_data_amazon0302(config):
+    path = config.get("data", "amazon_path")
     logger.info("Loading amazon0302 from %s", path)
 
     rows = []
@@ -127,11 +144,20 @@ def get_real_data_amazon0302(path):
         shape=(n, n)
     ).tocsr()
 
-    A = A[:6000, :9000]
+    logger.info("Original amazon0302 shape: %s", A.shape)
+    logger.info("Original amazon0302 nnz: %d", A.nnz)
 
-    logger.info("amazon0302 sliced shape: %s", A.shape)
-    logger.info("amazon0302 nnz: %d", A.nnz)
+    slice_from = config.get("experiment", "slice_from")
+    slice_to = config.get("experiment", "slice_to")
 
+    if slice_from is not None or slice_to is not None:
+        row_end = slice_from if slice_from is not None else A.shape[0]
+        col_end = slice_to if slice_to is not None else A.shape[1]
+        A = A[:row_end, :col_end]
+
+    logger.info("amazon0302 shape after slicing: %s", A.shape)
+    logger.info("amazon0302 nnz after slicing: %d", A.nnz)
+    
     return A
 
 def get_synthetic_data(n, d, z, head_prob=0.9, seed=42):
@@ -212,17 +238,6 @@ def run_synthetic_parameter_sweep(runner):
     return pd.concat(all_synthetic_results, ignore_index=True)
 
 def numerical_comparison(results_df):
-    """
-    Compute total improvement (%) of ImprovedSFD vs SFD and FD
-    for runtime, projection error, and covariance error.
-
-    Assumes results_df has columns:
-        - algorithm
-        - runtime
-        - projection_error
-        - covariance_error
-    """
-
     required_cols = {
         "algorithm",
         "runtime_sec",
@@ -234,7 +249,6 @@ def numerical_comparison(results_df):
     if missing:
         raise ValueError(f"Missing required columns: {missing}")
 
-    # Average each metric by algorithm
     avg_metrics = (
         results_df
         .groupby("algorithm")[["runtime_sec", "projection_error", "covariance_error"]]
@@ -285,7 +299,6 @@ def numerical_comparison(results_df):
             else:
                 print(f"  {metric}: N/A")
 
-    # Also return raw averages
     for algo in avg_metrics.index:
         for metric in metrics:
             results[f"{algo}_avg_{metric}"] = avg_metrics.loc[algo, metric]
@@ -294,24 +307,32 @@ def numerical_comparison(results_df):
 
 def main():
     config = Config("application.yaml")
-    l_values = [5, 10, 15, 20, 50, 100]
-
-    csv_path = Path(config.get("output", "results_dir"))
-    output_dir = Path(config.get("output", "figures_dir"))
+    l_values    = config.get("experiment", "l_values")
+    k           = config.get("experiment", "k")
+    csv_path    = Path(config.get("output", "results_dir"))
+    output_dir  = Path(config.get("output", "figures_dir"))
 
     csv_path.parent.mkdir(parents=True, exist_ok=True)
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    # real_data = get_real_data_amazon0302("../Dataset/amazon0302.txt.gz")
-    real_data=get_real_data(config=config)
+    real_data = get_real_data(config=config)
 
     runner = ExperimentRunner(
-        k=10,
-        sfd_n_iter=2,
-        sfd_random_state=0,
-        improved_sfd_n_iter=2,
-        improved_sfd_oversample=5,
-        improved_sfd_random_state=0,
+        k=k,
+        algorithm_factories={
+            "FD": lambda l: FrequentDirections(l=l),
+            "SFD": lambda l: SparseFrequentDirections(
+                l=l,
+                n_iter=2,
+                random_state=42,
+            ),
+            "ImprovedSFD": lambda l: ImprovedSparseFrequentDirections(
+                l=l,
+                n_iter=2,
+                p_oversample=5,
+                random_state=42,
+            ),
+        },
     )
 
     results_real = runner.run_sketch_size_experiment(
@@ -319,16 +340,10 @@ def main():
         l_values=l_values,
         dataset_name="real",
     )
-
-    comparison = numerical_comparison(results_real)
-    print(comparison)
-
-    # results_synthetic = run_synthetic_parameter_sweep(runner)
-
-    # results = pd.concat([results_real, results_synthetic], ignore_index=True)
-    # results.to_csv(csv_path, index=False)
-    results=results_real.to_csv(csv_path, index=False)
-
+    results_synthetic = run_synthetic_parameter_sweep(runner)
+    results = pd.concat([results_real, results_synthetic], ignore_index=True)
+    numerical_comparison(results)
+    results.to_csv(csv_path, index=False)
     logger.info("Saved results to %s", csv_path)
 
     real_plotter = RealDataVisualizer(
@@ -336,16 +351,16 @@ def main():
         output_dir=output_dir,
     )
 
-    # synthetic_plotter = SyntheticDataVisualizer(
-    #     csv_path=csv_path,
-    #     output_dir=output_dir,
-    # )
+    synthetic_plotter = SyntheticDataVisualizer(
+        csv_path=csv_path,
+        output_dir=output_dir,
+    )
 
     real_plot_path = real_plotter.plot()
-    # synthetic_plot_path = synthetic_plotter.plot()
+    synthetic_plot_path = synthetic_plotter.plot()
 
     logger.info("Real plot saved to: %s", real_plot_path)
-    # logger.info("Synthetic plot saved to: %s", synthetic_plot_path)
+    logger.info("Synthetic plot saved to: %s", synthetic_plot_path)
 
 if __name__ == "__main__":
     main()
