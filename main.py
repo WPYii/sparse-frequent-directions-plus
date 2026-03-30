@@ -36,7 +36,7 @@ def get_real_data(config):
     logger.info("Original shape: %s", matrix.shape)
     logger.info("Vocab size: %d", preprocessor.get_vocab_size())
 
-    real_data = preprocessor.transform(matrix, 6000)
+    real_data = preprocessor.transform(matrix, 3000)
 
     logger.info("Transposed shape: %s", real_data.shape)
 
@@ -99,7 +99,7 @@ def get_real_data_enron_dataset(dest_path="email-Enron.txt.gz"):
     logger.info("Shape: %s | Non-zeros: %d", A.shape, A.nnz)
     logger.info("Setup: Target k=10, Gap=0.042 [cite: 527, 539]")
     
-    return A
+    return A[:6000, :9000]
 
 def get_real_data_amazon0302(path):
 
@@ -211,6 +211,87 @@ def run_synthetic_parameter_sweep(runner):
 
     return pd.concat(all_synthetic_results, ignore_index=True)
 
+def numerical_comparison(results_df):
+    """
+    Compute total improvement (%) of ImprovedSFD vs SFD and FD
+    for runtime, projection error, and covariance error.
+
+    Assumes results_df has columns:
+        - algorithm
+        - runtime
+        - projection_error
+        - covariance_error
+    """
+
+    required_cols = {
+        "algorithm",
+        "runtime_sec",
+        "projection_error",
+        "covariance_error",
+    }
+
+    missing = required_cols - set(results_df.columns)
+    if missing:
+        raise ValueError(f"Missing required columns: {missing}")
+
+    # Average each metric by algorithm
+    avg_metrics = (
+        results_df
+        .groupby("algorithm")[["runtime_sec", "projection_error", "covariance_error"]]
+        .mean()
+    )
+
+    if "ImprovedSFD" not in avg_metrics.index:
+        raise ValueError("ImprovedSFD results not found in dataframe")
+
+    def compute_improvement(baseline, improved):
+        if baseline is None or improved is None:
+            return None
+        if baseline == 0:
+            return None
+        return (baseline - improved) / baseline * 100
+
+    metrics = ["runtime_sec", "projection_error", "covariance_error"]
+    baselines = ["FD", "SFD"]
+    results = {}
+
+    print("\n===== Numerical Comparison =====")
+
+    for algo in avg_metrics.index:
+        print(f"\n{algo}:")
+        print(f"  Runtime: {avg_metrics.loc[algo, 'runtime_sec']:.6f}")
+        print(f"  Projection Error: {avg_metrics.loc[algo, 'projection_error']:.6f}")
+        print(f"  Covariance Error: {avg_metrics.loc[algo, 'covariance_error']:.6f}")
+
+    improved_row = avg_metrics.loc["ImprovedSFD"]
+
+    print("\n===== Improvements of ImprovedSFD =====")
+    for baseline_algo in baselines:
+        if baseline_algo not in avg_metrics.index:
+            continue
+
+        baseline_row = avg_metrics.loc[baseline_algo]
+        print(f"\nAgainst {baseline_algo}:")
+
+        for metric in metrics:
+            improvement = compute_improvement(
+                baseline_row[metric],
+                improved_row[metric]
+            )
+            results[f"Improved_vs_{baseline_algo}_{metric}_%"] = improvement
+
+            if improvement is not None:
+                print(f"  {metric}: {improvement:.2f}%")
+            else:
+                print(f"  {metric}: N/A")
+
+    # Also return raw averages
+    for algo in avg_metrics.index:
+        for metric in metrics:
+            results[f"{algo}_avg_{metric}"] = avg_metrics.loc[algo, metric]
+
+    return results
+
 def main():
     config = Config("application.yaml")
     l_values = [5, 10, 15, 20, 50, 100]
@@ -238,6 +319,9 @@ def main():
         l_values=l_values,
         dataset_name="real",
     )
+
+    comparison = numerical_comparison(results_real)
+    print(comparison)
 
     # results_synthetic = run_synthetic_parameter_sweep(runner)
 
