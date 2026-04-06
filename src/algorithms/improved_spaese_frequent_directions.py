@@ -8,10 +8,7 @@ class ImprovedSparseFrequentDirections:
         l: int,
         n_iter: int = 2,
         random_state: int | None = 0,
-        buffer_mult: int = 1,
-        max_buffer_rows: int | None = None,
         use_approx_p_svd: bool = False,
-        p_oversample: int = 5,
         use_ors_admission: bool = False,
         candidate_block_size: int = 256,
         sample_epsilon: float = 0.5,
@@ -24,8 +21,6 @@ class ImprovedSparseFrequentDirections:
             raise ValueError("Sketch size l must be positive.")
         if n_iter <= 0:
             raise ValueError("n_iter must be positive.")
-        if buffer_mult <= 0:
-            raise ValueError("buffer_mult must be positive.")
         if candidate_block_size <= 0:
             raise ValueError("candidate_block_size must be positive.")
         if not (0.0 < sample_epsilon < 1.0):
@@ -41,10 +36,7 @@ class ImprovedSparseFrequentDirections:
 
         self.l = l
         self.n_iter = n_iter
-        self.buffer_mult = buffer_mult
-        self.max_buffer_rows = max_buffer_rows
         self.use_approx_p_svd = use_approx_p_svd
-        self.p_oversample = p_oversample
         self.use_ors_admission = use_ors_admission
         self.candidate_block_size = candidate_block_size
         self.sample_epsilon = sample_epsilon
@@ -288,7 +280,7 @@ class ImprovedSparseFrequentDirections:
 
     def _approx_top_svd_rows(self, P: np.ndarray, rank: int):
         r, d = P.shape
-        k = min(rank + self.p_oversample, r, d)
+        k = min(rank, r, d)
 
         Omega = self.rng.standard_normal((d, k))
         Y = P @ Omega

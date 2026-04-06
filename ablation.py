@@ -39,9 +39,7 @@ class ImprovedSFDWithBlockKrylovOnly(SparseFrequentDirections):
             l=self.l,
             n_iter=self.n_iter,
             random_state=None,
-            buffer_mult=1,
             use_approx_p_svd=False,
-            p_oversample=5,
         )
         helper.rng = self.rng
         Z = helper._block_krylov_iteration(A_buffer, l_eff)
@@ -148,7 +146,6 @@ def parse_args():
     parser.add_argument("--head-prob", type=float, default=0.9, help="Synthetic head probability.")
     parser.add_argument("--seed", type=int, default=42, help="Synthetic random seed.")
     parser.add_argument("--n-iter", type=int, default=2, help="Iteration count.")
-    parser.add_argument("--buffer-mult", type=int, default=1, help="ImprovedSFD buffer multiplier.")
     return parser.parse_args()
 
 
@@ -285,9 +282,7 @@ def build_algorithm_factories(args):
             l=l,
             n_iter=args.n_iter,
             random_state=args.seed,
-            buffer_mult=args.buffer_mult,
             use_approx_p_svd=False,
-            p_oversample=5,
             use_ors_admission=True,
             candidate_block_size=256,
             sample_epsilon=0.5,
