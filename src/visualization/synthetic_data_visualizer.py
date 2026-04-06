@@ -33,7 +33,7 @@ class SyntheticDataVisualizer(BaseVisualizer):
                 ax = axes[row_idx, col_idx]
                 subset_param = df[df["varied_param"] == param].copy()
 
-                for algorithm in ["FD", "SFD", "ImprovedSFD"]:
+                for algorithm in ["SFD", "ImprovedSFD"]:
                     subset = subset_param[subset_param["algorithm"] == algorithm].sort_values("param_value")
                     ax.plot(subset["param_value"], subset[metric], marker="o", label=algorithm)
 

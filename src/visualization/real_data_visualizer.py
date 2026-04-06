@@ -22,7 +22,7 @@ class RealDataVisualizer(BaseVisualizer):
         ]
 
         for ax, (metric, title) in zip(axes, metrics):
-            for algorithm in ["FD", "SFD", "ImprovedSFD"]:
+            for algorithm in ["SFD", "ImprovedSFD"]:
                 subset = df[df["algorithm"] == algorithm].sort_values("sketch_size")
                 ax.plot(subset["sketch_size"], subset[metric], marker="o", label=algorithm)
 

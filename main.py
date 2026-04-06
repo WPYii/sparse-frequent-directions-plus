@@ -107,13 +107,9 @@ def get_real_data_enron_dataset(config):
     logger.info("Dataset Loaded: SNAP/EMAIL-ENRON")
     logger.info("Shape: %s | Non-zeros: %d", A.shape, A.nnz)
     
-    slice_from    = config.get("experiment", "slice_from")
-    slice_to    = config.get("experiment", "slice_to")
-
-    if slice_from is not None or slice_to is not None:
-        row_end = slice_from if slice_from is not None else A.shape[0]
-        col_end = slice_to if slice_to is not None else A.shape[1]
-        A = A[:row_end, :col_end]
+    slice_to = config.get("experiment", "slice_to")
+    if slice_to is not None:
+        A = A[:, :slice_to]
 
     logger.info("Final shape after slicing: %s", A.shape)
     return A
@@ -147,13 +143,9 @@ def get_real_data_amazon0302(config):
     logger.info("Original amazon0302 shape: %s", A.shape)
     logger.info("Original amazon0302 nnz: %d", A.nnz)
 
-    slice_from = config.get("experiment", "slice_from")
     slice_to = config.get("experiment", "slice_to")
-
-    if slice_from is not None or slice_to is not None:
-        row_end = slice_from if slice_from is not None else A.shape[0]
-        col_end = slice_to if slice_to is not None else A.shape[1]
-        A = A[:row_end, :col_end]
+    if slice_to is not None:
+        A = A[:, :slice_to]
 
     logger.info("amazon0302 shape after slicing: %s", A.shape)
     logger.info("amazon0302 nnz after slicing: %d", A.nnz)
@@ -319,7 +311,7 @@ def main():
     runner = ExperimentRunner(
         k=k,
         algorithm_factories={
-            "FD": lambda l: FrequentDirections(l=l),
+            # "FD": lambda l: FrequentDirections(l=l),
             "SFD": lambda l: SparseFrequentDirections(
                 l=l,
                 n_iter=2,
@@ -328,8 +320,11 @@ def main():
             "ImprovedSFD": lambda l: ImprovedSparseFrequentDirections(
                 l=l,
                 n_iter=2,
-                p_oversample=5,
                 random_state=42,
+                use_ors_admission=True,
+                candidate_block_size=256,
+                sample_epsilon=0.5,
+                ridge_lambda=1.0,
             ),
         },
     )
